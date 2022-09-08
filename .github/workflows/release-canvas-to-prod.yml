@@ -19,7 +19,7 @@ jobs:
         uses: microsoft/powerplatform-actions/pack-solution@v0
         with:
           solution-file: ${{env.PUBLISH_URL}}
-          solution-folder: 'src'
+          solution-folder: 'src/'
           solution-type: 'Unmanaged'
           overwrite-files: true      
 
