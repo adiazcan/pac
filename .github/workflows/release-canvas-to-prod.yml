@@ -1,0 +1,34 @@
+name: Pack and Deploy
+
+on:
+  workflow_dispatch:
+
+env:
+    CLIENT_ID: 2007de92-e10d-4a63-8584-1196e227495d
+    TENANT_ID: b99992c6-d6c5-4028-99b5-a1f106bb90bc
+    PUBLISH_URL: 'out/Account manager.msapp'
+    
+jobs:
+  Pack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Pack Solution
+        uses: microsoft/powerplatform-actions/pack-solution@v0
+        with:
+          solution-file: ${{env.PUBLISH_URL}}
+          solution-folder: 'src/'
+          solution-type: 'Unmanaged'
+          overwrite-files: true      
+
+      - name: Publish Solution
+        uses: microsoft/powerplatform-actions/publish-solution@v0
+        with:
+          app-id: ${{env.CLIENT_ID}}
+          client-secret: ${{ secrets.PowerPlatformSPN }}
+          tenant-id: ${{env.TENANT_ID}}
+          solution-file: ${{env.PUBLISH_URL}}
+          force-overwrite: true
+          publish-changes: true
